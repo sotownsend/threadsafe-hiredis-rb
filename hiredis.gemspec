@@ -3,7 +3,7 @@ require File.expand_path("../lib/hiredis/version", __FILE__)
 Gem::Specification.new do |s|
   s.name = "threadsafe-hiredis"
   s.version = Hiredis::VERSION
-  s.homepage = "http://github.com/threadsafe-hiredis-rb"
+  s.homepage = "http://github.com/sotownsend/threadsafe-hiredis-rb"
   s.authors = ["Pieter Noordhuis", "Seo Townsend"]
   s.email = ["pcnoordhuis@gmail.com", "seotownsend@icloud.com"]
   s.license = 'BSD-3-Clause'
