@@ -1,5 +1,5 @@
 # threadsafe-hiredis-rb
-# You Must, Must, Must use Hiredis::ThreadSafeConnection instead of Hiredis::Connection (No changes to code necessary beyond that).  Hiredis::Connection still remains non thread safe.
+## You need to use Hiredis::ThreadSafeConnection instead of Hiredis::Connection (No changes to code necessary beyond that).  Hiredis::Connection still remains non thread safe.
 This is a fork of the original hiredis-rb that includes threadsafe support.  All credit for hiredis-rb is attributed to Pieter Noordhius (https://github.com/redis/hiredis-rb).
 
 
