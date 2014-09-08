@@ -12,7 +12,7 @@ def push_data
       key = rand(100000000000)
 
       1000.times do |i|
-        @conn.write ["SET", "#{key.to_s}#{key}#{i}", i]
+        @conn.write ["SET", "temp://#{key.to_s}#{key}#{i}", i]
       end
 
       1000.times do
@@ -20,7 +20,7 @@ def push_data
       end
 
       1000.times do |i|
-        @conn.write ["GET", "#{key.to_s}#{key}#{i}"]
+        @conn.write ["GET", "temp://#{key.to_s}#{key}#{i}"]
       end
 
       1000.times do |i|
