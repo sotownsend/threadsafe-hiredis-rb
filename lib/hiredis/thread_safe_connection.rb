@@ -1,5 +1,6 @@
 module Hiredis
   class ThreadSafeConnection
+    ACCEPTABLE_FORWARDS = [:timeout=, :connected?]
     #Spin up 8 threads by default, lazy loading is available, but this can make applications more deterministic
     STANDBY_POOL_SIZE_DEFAULT = 8
     def initialize params={}
@@ -41,7 +42,11 @@ module Hiredis
     end
 
     def method_missing method, *args, &block
-      $stderr.puts "WARN: Implementors: please implement #{method.inspect} for Hiredis::ThreadSafeConnection, proxying method for now to Hiredis::Connection"
+      #Certain calls are ok to forward
+      unless ACCEPTABLE_FORWARDS.include? method
+        $stderr.puts "WARN: Implementors: please implement #{method.inspect} for Hiredis::ThreadSafeConnection, proxying method for now to Hiredis::Connection"
+      end
+
       self.client.send(method, *args, &block)
     end
 

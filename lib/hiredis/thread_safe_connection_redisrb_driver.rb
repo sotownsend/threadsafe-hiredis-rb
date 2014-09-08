@@ -1,3 +1,4 @@
+#Driver for ThreadsafeHiredis in redis
 require "redis/connection/registry"
 require "redis/errors"
 require "hiredis/connection"

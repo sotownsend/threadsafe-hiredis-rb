@@ -1,8 +1,7 @@
 # threadsafe-hiredis-rb
-## You need to use Hiredis::ThreadSafeConnection instead of Hiredis::Connection (No changes to code necessary beyond that).  Hiredis::Connection still remains non thread safe.
 This is a fork of the original hiredis-rb that includes threadsafe support.  All credit for hiredis-rb is attributed to Pieter Noordhius (https://github.com/redis/hiredis-rb).
 
-Do not include hiredis with this gem, this is not a plugin, this is a full backwards compatible fork that only has an additional class for thread safe connections (''Hiredis::ThreadSafeConnection'').  The include statement remains 'redis', not 'threadsafe-hiredis'.
+Do not include hiredis with this gem, this is not a plugin, this is a full backwards compatible fork that only has an additional class for thread safe connections (''Hiredis::ThreadSafeConnection'') and a special driver for redisrb.  The include statement remains 'redis', not 'threadsafe-hiredis'.
 
 
 Ruby extension that wraps [hiredis](http://github.com/redis/hiredis). Both
@@ -31,25 +30,17 @@ gem "threadsafe-hiredis"
 gem "redis", ">= 2.2.0"
 ```
 
-To use hiredis with redis-rb, you need to require `redis/connection/hiredis`
-before creating a new connection. This makes sure that hiredis will be used
-instead of the pure Ruby connection code and protocol parser. Doing so in the
-Gemfile is done by adding a `:require` option to the line adding the redis-rb
-dependency:
-
-``` ruby
-gem "redis", ">= 2.2.0", :require => ["redis", "redis/connection/hiredis"]
-```
-
+To use hiredis with redis-rb, you need to require `hiredis/thread_safe_connection_redisrb_driver'
+before creating a new redisrb client. This makes sure that hiredis will be used
+instead of the pure Ruby connection code and protocol parser.
 You can use Redis normally, as you would with the pure Ruby version.
 
 ### Standalone: Connection
-
 A connection to Redis can be opened by creating an instance of
-`Hiredis::Connection` and calling `#connect`:
+`Hiredis::ThreadSafeConnection` and calling `#connect`:
 
 ``` ruby
-conn = Hiredis::Connection.new
+conn = Hiredis::ThreadSafeConnection.new
 conn.connect("127.0.0.1", 6379)
 ```
 
@@ -79,20 +70,6 @@ When the connection was closed by the server, an error of the type
 `Hiredis::Connection::EOFError` will be raised. For all I/O related errors,
 the Ruby built-in `Errno::XYZ` errors will be raised. All other errors
 (such as a protocol error) result in a `RuntimeError`.
-
-You can skip loading everything and just load `Hiredis::Connection` by
-requiring `hiredis/connection`.
-
-### Standalone: Thread Safe Connection
-If you want to use `Hiredis::Connection` in a multi-threaded environment, replace `Hiredis::Connection` with `Hiredis::ThreadSafeConnection`.  All threads have their own independent pipeline; e.g. sending a write on one thread, and a read on another will just cause the second thread to block. 
-
-``` ruby
-conn = Hiredis::ThreadSafeConnection.new
-conn.connect("127.0.0.1", 6379)
-Thread.new do
-  conn.write ["SET", "hello", "world"]
-end
-```
 
 Connections can be created lazily, but this can be prevented by persisting your thread pool and passing the optional argument `standby_pool_size` to ``Hiredis::ThreadSafeConnection``.  The example below would create 16 connections on initializations and then pass those connections to threads when they first request a write or read.  Note that if you do not persist your threads, this pool will quickly run out and ``Hiredis::ThreadSafeConnection`` will be forced to dynamically connect.
 
