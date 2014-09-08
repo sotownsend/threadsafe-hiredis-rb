@@ -1,8 +1,11 @@
 require '../lib/hiredis.rb'
 require 'hiredis'
+require 'redis'
 
 @conn = Hiredis::ThreadSafeConnection.new
 @conn.connect("127.0.0.1", 6379)
+
+@conn2 = Redis.new
 
 $stderr.puts "Could not connect" unless @conn
 
@@ -15,6 +18,8 @@ def push_data
         @conn.write ["SET", "temp://#{key.to_s}#{key}#{i}", i]
         @conn.write ["EXPIRE", "temp://#{key.to_s}#{key}#{i}", 5]
         @conn.read
+
+        @conn2.set("lol", "lol")
       end
 
       1000.times do
