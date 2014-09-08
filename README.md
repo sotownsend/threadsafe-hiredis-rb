@@ -2,6 +2,8 @@
 ## You need to use Hiredis::ThreadSafeConnection instead of Hiredis::Connection (No changes to code necessary beyond that).  Hiredis::Connection still remains non thread safe.
 This is a fork of the original hiredis-rb that includes threadsafe support.  All credit for hiredis-rb is attributed to Pieter Noordhius (https://github.com/redis/hiredis-rb).
 
+Do not include hiredis with this gem, this is not a plugin, this is a full backwards compatible fork that only has an additional class for thread safe connections (''Hiredis::ThreadSafeConnection'').  The include statement remains 'redis', not 'threadsafe-hiredis'.
+
 
 Ruby extension that wraps [hiredis](http://github.com/redis/hiredis). Both
 the synchronous connection API and a separate protocol reader are supported.
