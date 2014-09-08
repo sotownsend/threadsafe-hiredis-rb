@@ -13,6 +13,8 @@ def push_data
 
       1000.times do |i|
         @conn.write ["SET", "temp://#{key.to_s}#{key}#{i}", i]
+        @conn.write ["EXPIRE", "temp://#{key.to_s}#{key}#{i}", 5]
+        @conn.read
       end
 
       1000.times do
