@@ -1,4 +1,5 @@
 # threadsafe-hiredis-rb
+## There are issues with this library and certain stacks.  Current advice is to use redis-rb for the time being.
 This is a fork of the original hiredis-rb that includes threadsafe support.  All credit for hiredis-rb is attributed to Pieter Noordhius (https://github.com/redis/hiredis-rb).
 
 Do not include hiredis with this gem, this is not a plugin, this is a full backwards compatible fork that only has an additional class for thread safe connections (''Hiredis::ThreadSafeConnection'') and a special driver for redisrb.  The include statement remains 'redis', not 'threadsafe-hiredis'.
